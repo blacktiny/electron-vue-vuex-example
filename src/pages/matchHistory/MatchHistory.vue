@@ -59,6 +59,15 @@
               </div>
             </div>
           </div>
+          <div class="select-action-container">
+            <Select
+              name="SELECT ACTION"
+              :options="matchActionData"
+              :selected="selectedActions"
+              isMulti
+              @on-selected="updateLatestMatchAnalysis"
+            />
+          </div>
         </div>
       </div>
 
@@ -90,9 +99,11 @@
 </template>
 
 <script>
+import { Select } from '@/global/ui'
 import { ChampionImg, ItemImg, SpellImg } from '@/global/components'
 import MatchTile from './MatchTile'
 import { IconBase, IconArrowLeft, IconArrowRight } from '@/global/icons'
+import { SelectMatchActionData } from '@/global/utils/constants.js'
 
 export default {
   name: 'MatchHistory',
@@ -100,6 +111,7 @@ export default {
     msg: String
   },
   components: {
+    Select,
     ChampionImg,
     SpellImg,
     ItemImg,
@@ -108,9 +120,18 @@ export default {
     IconArrowLeft,
     IconArrowRight
   },
-  data: () => ({
-    items: [1402, 3100, 3152, 3020, 3165, 0, 3364]
-  })
+  data () {
+    return {
+      items: [1402, 3100, 3152, 3020, 3165, 0, 3364],
+      matchActionData: [...SelectMatchActionData],
+      selectedActions: []
+    }
+  },
+  methods: {
+    updateLatestMatchAnalysis(updatedActions) {
+      this.selectedActions = updatedActions
+    }
+  }
 }
 </script>
 
@@ -147,7 +168,7 @@ export default {
       width: 100%;
       height: 178px;
       background-color: #00000d;
-      padding: 20px 16px;
+      padding: 20px 32px 20px 16px;
       box-sizing: border-box;
 
       .match-status {
@@ -258,6 +279,10 @@ export default {
             margin: 0 7px 0 5px;
           }
         }
+      }
+
+      .select-action-container {
+        margin-left: auto;
       }
     }
   }
