@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="match-tile__teams-champion" v-for="champ in teamSummary.filter(champ => champ.teamId === 200)" :key="champ.championId">
+        <div class="match-tile__teams-champion team-blue" v-for="(champ, index) in teamSummary.filter(champ => champ.teamId === 200)" :key="index" :style="{ zIndex: 10 - index }">
           <ChampionImg team="blue" />
         </div>
       </div>
@@ -219,7 +219,7 @@ export default {
   }
 
   &__info {
-    width: 156px;
+    width: 120px;
     align-items: flex-start;
 
     h4 {
@@ -269,6 +269,11 @@ export default {
 
     &-champion {
       margin-left: -3px;
+
+      &.team-blue {
+        margin-left: 0;
+        margin-right: -3px;
+      }
     }
   }
 

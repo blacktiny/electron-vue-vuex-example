@@ -24,14 +24,6 @@ export default {
       default: 'blue',
       type: String
     }
-  },
-  computed: {
-    // classObject: function () {
-    //   return {
-    //     hasBorder: this.isBorder,
-    //     team: this.team
-    //   }
-    // }
   }
 }
 </script>

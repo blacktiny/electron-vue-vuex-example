@@ -16,3 +16,22 @@ export const SelectMatchActionData = [
     value: 'play-like-a-pro'
   }
 ]
+
+export const MatchFilterData = [
+  {
+    label: 'All Champions',
+    value: 'all-champions'
+  },
+  {
+    label: 'All Roles',
+    value: 'all-roles'
+  },
+  {
+    label: 'Season 9',
+    value: 'season-9'
+  },
+  {
+    label: 'Solo / Duo',
+    value: 'solo_duo'
+  },
+]

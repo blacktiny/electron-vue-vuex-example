@@ -53,7 +53,7 @@
                   <p class="champion-name">Lorem</p>
                   <ChampionImg />
                   <img class="champion-role" src="@/assets/icons/role_top.png" alt="top" />
-                  <ChampionImg />
+                  <ChampionImg team="red" />
                   <p class="champion-name">Lorem</p>
                 </div>
               </div>
@@ -73,7 +73,12 @@
 
       <div class="col match-history__content">
         <div class="row matches-header">
-          <div class="matches-header__filter">
+          <div class="row matches-header__filter">
+            <MatchFilterbar
+              :options="matchFilterData"
+              :selected="selectedFilters"
+              @on-updated="updateMatchFilters"
+            />
           </div>
 
           <div class="row matches-header__navigator">
@@ -106,9 +111,10 @@
 <script>
 import { Select } from '@/global/ui'
 import { ChampionImg, ItemImg, SpellImg } from '@/global/components'
+import MatchFilterbar from './MatchFilterbar'
 import MatchTile from './MatchTile'
 import { IconBase, IconArrowLeft, IconArrowRight } from '@/global/icons'
-import { SelectMatchActionData } from '@/global/utils/constants.js'
+import { SelectMatchActionData, MatchFilterData } from '@/global/utils/constants.js'
 
 export default {
   name: 'MatchHistory',
@@ -120,6 +126,7 @@ export default {
     ChampionImg,
     SpellImg,
     ItemImg,
+    MatchFilterbar,
     MatchTile,
     IconBase,
     IconArrowLeft,
@@ -129,12 +136,17 @@ export default {
     return {
       items: [1402, 3100, 3152, 3020, 3165, 0, 3364],
       matchActionData: [...SelectMatchActionData],
-      selectedActions: []
+      matchFilterData: [...MatchFilterData],
+      selectedActions: [],
+      selectedFilters: [...MatchFilterData]
     }
   },
   methods: {
     updateLatestMatchAnalysis(updatedActions) {
       this.selectedActions = updatedActions
+    },
+    updateMatchFilters(updatedFilters) {
+      this.selectedFilters = updatedFilters
     }
   }
 }
@@ -194,8 +206,8 @@ export default {
       }
 
       .match-title {
-        padding-top: 3px;
-        margin-bottom: 18px;
+        padding-top: 8px;
+        margin-bottom: 15px;
 
         img {
           width: 15px;
@@ -301,8 +313,11 @@ export default {
     .matches-header {
       margin-bottom: 10px;
 
+      &__filter {
+        width: calc(100% - 165px);
+      }
+
       &__navigator {
-        
         .button-navigator {
           display: flex;
           align-items: center;

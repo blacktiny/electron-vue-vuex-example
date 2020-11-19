@@ -96,6 +96,7 @@ export default {
     box-sizing: border-box;
     cursor: pointer;
     z-index: 3;
+    transition: background 0.2s ease-out;
 
     &.opened {
       svg {
