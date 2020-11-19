@@ -1,7 +1,7 @@
 <template>
-  <div class="profile-avatar-container" :class="[ isBorder ? 'has-border' : '', team ]">
+  <div class="profile-avatar-container" :class="[ isBorder ? 'has-border' : '' ]">
     <div class="avatar-img"></div>
-    <div class="level" v-if="level">{{ level }}</div>
+    <div class="level" v-if="level" v-tooltip="'Level ' + level">{{ level }}</div>
   </div>
 </template>
 
@@ -47,13 +47,13 @@ export default {
 
 .level {
   position: absolute;
-  left: calc(50% - 8px);
-  bottom: -8px;
+  left: calc(50% - 12px);
+  bottom: -12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   font-family: 'Work Sans Bold';
   border-radius: 50%;
   background-color: black;

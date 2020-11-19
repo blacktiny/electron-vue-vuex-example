@@ -227,14 +227,10 @@ export default {
     }
   }
 
-  &__avatar {
-
-  }
-
   &__spells {
     flex-wrap: wrap;
     width: 46px;
-    margin-left: 10px;
+    margin: 1.5px 0 0 10px;
   }
 
   &__kda {
@@ -256,6 +252,7 @@ export default {
   &__items {
     flex-wrap: wrap;
     width: 70px;
+    margin-top: 1.5px;
   }
 
   &__teams {

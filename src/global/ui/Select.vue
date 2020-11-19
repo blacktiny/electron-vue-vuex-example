@@ -51,12 +51,6 @@ export default {
       isOpened: false
     }
   },
-  mounted() {
-    if (!this.value) {
-      // eslint-disable-next-line vue/no-mutating-props
-      this.value = this.options[0].value
-    }
-  },
   methods: {
     openOptionsList() {
       this.isOpened = true

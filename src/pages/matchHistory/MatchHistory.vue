@@ -98,7 +98,7 @@
           </div>
         </div>
         
-        <div class="col matches-list">
+        <div class="col matches-list scrollbar">
           <div class="matches-list-item" v-for="i in (0, 9)" :key="i">
             <MatchTile status="victory" />
           </div>
@@ -330,7 +330,7 @@ export default {
 
           &.disabled {
             background-color: #1c1f33;
-            cursor: default;
+            cursor: not-allowed;
 
             &:hover {
               background-color: #1c1f33;
@@ -350,7 +350,6 @@ export default {
 
     .matches-list {
       height: 580px;
-      overflow: auto;
     }
   }
 }
