@@ -1,6 +1,6 @@
 <template>
   <div class="ui-select">
-    <div class="ui-select__menu" v-on:click="openOptionsList">
+    <div class="ui-select__menu" v-on:click="openOptionsList" :class="{ 'opened': isOpened }">
       {{name ? name : 'Select'}}
       <IconBase width="10" height="8" icon-name="icon-arrow-down">
         <IconArrowUp v-if="isOpened" />
@@ -95,6 +95,13 @@ export default {
     padding: 12px 30px 10px 22px;
     box-sizing: border-box;
     cursor: pointer;
+    z-index: 3;
+
+    &.opened {
+      svg {
+        z-index: 6;
+      }
+    }
 
     &:hover {
       background-color: #0742d6;
@@ -104,7 +111,6 @@ export default {
       position: absolute;
       top: 16px;
       right: 14px;
-      z-index: 6;
     }
   }
 
@@ -115,6 +121,7 @@ export default {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
     animation: dropdown-show 0.2s ease-out;
     transform-origin: top;
+    z-index: 4;
 
     @keyframes dropdown-show {
       0% {
@@ -133,6 +140,7 @@ export default {
       width: 100vw;
       height: 100vh;
       z-index: 4;
+      cursor: default;
     }
 
     &__item {
@@ -162,7 +170,7 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 12px;
-  font-weight: bold;
+  font-family: 'Work Sans Bold';
   line-height: 14px;
   color: white;
 }

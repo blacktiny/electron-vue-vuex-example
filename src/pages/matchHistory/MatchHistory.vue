@@ -49,7 +49,7 @@
               </div>
 
               <div class="col champion-matchups">
-                <div class="row champion-matchup">
+                <div class="row champion-matchup" v-for="i in (0, 5)" :key="i">
                   <p class="champion-name">Lorem</p>
                   <ChampionImg />
                   <img class="champion-role" src="@/assets/icons/role_top.png" alt="top" />
@@ -92,7 +92,12 @@
             </div>
           </div>
         </div>
-        <MatchTile />
+        
+        <div class="col matches-list">
+          <div class="matches-list-item" v-for="i in (0, 9)" :key="i">
+            <MatchTile status="victory" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -178,7 +183,7 @@ export default {
         width: 25px;
         height: 100%;
         font-size: 14px;
-        font-weight: bold;
+        font-family: 'Work Sans Bold';
         color: white;
         background-color: #57a773;
         writing-mode: vertical-rl;
@@ -218,7 +223,7 @@ export default {
           }
         }
 
-        .spells-group {}
+        // .spells-group {}
 
         .items-group {
           margin-top: 12px;
@@ -239,7 +244,7 @@ export default {
           margin-bottom: 2px;
 
           span {
-            font-weight: bold;
+            font-family: 'Work Sans Bold';
           }
         }
 
@@ -249,7 +254,7 @@ export default {
 
         &__kda1 {
           font-size: 14px;
-          font-weight: bold;
+          font-family: 'Work Sans Bold';
 
           span:nth-child(1) {
             color: #88d9a2;
@@ -261,16 +266,21 @@ export default {
 
         &__lvling1 {
           color: #eaeaee;
-          font-weight: bold;
+          font-family: 'Work Sans Bold';
           margin: 2px 0 3px;
         }
       }
 
       .champion-matchups {
+        & > div:last-child {
+          margin-bottom: 0;
+        }
+
         .champion-matchup {
+          margin-bottom: 3px;
+
           .champion-name {
             font-size: 10px;
-            color: #86b7c6;
             padding: 0 10px;
           }
 
@@ -305,6 +315,7 @@ export default {
 
           &.disabled {
             background-color: #1c1f33;
+            cursor: default;
 
             &:hover {
               background-color: #1c1f33;
@@ -320,6 +331,11 @@ export default {
           padding: 0 15px;
         }
       }
+    }
+
+    .matches-list {
+      height: 580px;
+      overflow: auto;
     }
   }
 }

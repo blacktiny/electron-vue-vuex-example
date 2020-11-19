@@ -1,6 +1,7 @@
 <template>
   <div class="profile-avatar-container" :class="[ isBorder ? 'has-border' : '', team ]">
     <div class="avatar-img"></div>
+    <div class="level" v-if="level">{{ level }}</div>
   </div>
 </template>
 
@@ -42,5 +43,19 @@ export default {
   background-repeat: no-repeat;
   background-size: contain;
   border-radius: 50%;
+}
+
+.level {
+  position: absolute;
+  left: calc(50% - 8px);
+  bottom: -8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-family: 'Work Sans Bold';
+  border-radius: 50%;
+  background-color: black;
 }
 </style>
