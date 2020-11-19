@@ -3,7 +3,9 @@
     <div class="match-history page-content">
       <div class="match-history__header">
         <div class="row title">
-          <img src='@/assets/icons/bar-chart-2.png' alt="chart" />
+          <IconBase width="16" height="20" icon-name="icon-chart">
+            <IconChart />
+          </IconBase>
           <h4>Your Latest Match Analysis</h4>
         </div>
 
@@ -13,7 +15,9 @@
           <div class="match-status">Victory</div>
           <div class="col">
             <div class="row match-title">
-              <img src='@/assets/icons/role_top.png' alt="top" />
+              <IconBase width="15" height="15" icon-name="icon-role-top">
+                <IconRoleTop />
+              </IconBase>
               <h4>Cyber Schnitzel</h4>
             </div>
             <div class="row">
@@ -52,7 +56,9 @@
                 <div class="row champion-matchup" v-for="i in (0, 5)" :key="i">
                   <p class="champion-name">Lorem</p>
                   <ChampionImg />
-                  <img class="champion-role" src="@/assets/icons/role_top.png" alt="top" />
+                  <IconBase width="13" height="13" icon-name="icon-role-mid">
+                    <IconRoleMid />
+                  </IconBase>
                   <ChampionImg team="red" />
                   <p class="champion-name">Lorem</p>
                 </div>
@@ -113,7 +119,7 @@ import { Select } from '@/global/ui'
 import { ChampionImg, ItemImg, SpellImg } from '@/global/components'
 import MatchFilterbar from './MatchFilterbar'
 import MatchTile from './MatchTile'
-import { IconBase, IconArrowLeft, IconArrowRight } from '@/global/icons'
+import { IconBase, IconArrowLeft, IconArrowRight, IconChart, IconRoleMid, IconRoleTop } from '@/global/icons'
 import { SelectMatchActionData, MatchFilterData } from '@/global/utils/constants.js'
 
 export default {
@@ -130,7 +136,10 @@ export default {
     MatchTile,
     IconBase,
     IconArrowLeft,
-    IconArrowRight
+    IconArrowRight,
+    IconChart,
+    IconRoleMid,
+    IconRoleTop
   },
   data () {
     return {
@@ -209,8 +218,7 @@ export default {
         padding-top: 8px;
         margin-bottom: 15px;
 
-        img {
-          width: 15px;
+        svg {
           margin-right: 10px;
         }
 
@@ -296,8 +304,7 @@ export default {
             padding: 0 10px;
           }
 
-          .champion-role {
-            width: 13px;
+          svg {
             margin: 0 7px 0 5px;
           }
         }
