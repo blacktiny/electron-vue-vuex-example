@@ -12,13 +12,13 @@
         <div class="divider"></div>
 
         <div class="row match-analysis-tile">
-          <div class="match-status">Victory</div>
+          <div class="match-status" :class="[matchStatus]">{{ matchStatus }}</div>
           <div class="col">
             <div class="row match-title">
               <IconBase width="15" height="15" icon-name="icon-role-top">
                 <IconRoleTop />
               </IconBase>
-              <h4>Cyber Schnitzel</h4>
+              <h4>{{ lastMatchData.summonerName }}</h4>
             </div>
             <div class="row">
               <div class="row hero-info">
@@ -31,7 +31,7 @@
                 </div>
                 <div class="row items-group">
                   <div class="main-items">
-                    <div class="item" v-for="item in items.slice(0, 6)" :key="{item}">
+                    <div class="item" v-for="item in lastMatchData.build.slice(0, 6)" :key="{item}">
                       <ItemImg />
                     </div>
                   </div>
@@ -45,22 +45,20 @@
                 <p class="match-info__duration">Duration: <span>34:12</span></p>
                 <p class="match-info__time">4 Hours Ago</p>
                 <p class="match-info__kda1">
-                  <span>14</span> / <span>5</span> / <span>7</span>
+                  <span>{{ lastMatchData.kills }}</span> / <span>{{ lastMatchData.deaths }}</span> / <span>{{ lastMatchData.assists }}</span>
                 </p>
                 <p class="match-info__kda2">4.20:1 KDA</p>
-                <p class="match-info__lvling1">160 CS</p>
+                <p class="match-info__lvling1">{{ lastMatchData.cs }} CS</p>
                 <p class="match-info__lvling2">55% KP</p>
               </div>
 
               <div class="col champion-matchups">
-                <div class="row champion-matchup" v-for="i in (0, 5)" :key="i">
-                  <p class="champion-name">Lorem</p>
+                <div class="row champion-matchup" v-for="champPair in matchupData" :key="champPair.roleId">
+                  <p class="champion-name">{{ champPair.blueChamp.summonerName }}</p>
                   <ChampionImg />
-                  <IconBase width="13" height="13" icon-name="icon-role-mid">
-                    <IconRoleMid />
-                  </IconBase>
+                  <IconRole :roleId="champPair.roleId" width="13" height="13" />
                   <ChampionImg team="red" />
-                  <p class="champion-name">Lorem</p>
+                  <p class="champion-name red">{{ champPair.redChamp.summonerName }}</p>
                 </div>
               </div>
             </div>
@@ -105,8 +103,8 @@
         </div>
         
         <div class="col matches-list scrollbar">
-          <div class="matches-list-item" v-for="i in (0, 9)" :key="i">
-            <MatchTile status="victory" />
+          <div class="matches-list-item" v-for="(match, i) in matchesHistoryData" :key="i">
+            <MatchTile :matchData="match" status="victory" />
           </div>
         </div>
       </div>
@@ -119,8 +117,9 @@ import { Select } from '@/global/ui'
 import { ChampionImg, ItemImg, SpellImg } from '@/global/components'
 import MatchFilterbar from './MatchFilterbar'
 import MatchTile from './MatchTile'
-import { IconBase, IconArrowLeft, IconArrowRight, IconChart, IconRoleMid, IconRoleTop } from '@/global/icons'
+import { IconBase, IconArrowLeft, IconArrowRight, IconChart, IconRole, IconRoleTop } from '@/global/icons'
 import { SelectMatchActionData, MatchFilterData } from '@/global/utils/constants.js'
+import mockup from '@/global/mockup/MatchHistory.json'
 
 export default {
   name: 'MatchHistory',
@@ -138,16 +137,41 @@ export default {
     IconArrowLeft,
     IconArrowRight,
     IconChart,
-    IconRoleMid,
+    IconRole,
     IconRoleTop
   },
   data () {
     return {
+      lastMatchData: mockup.analysis[0],
+      matchStatus: mockup.analysis[0].win ? 'victory' : 'defeat',
+      matchesHistoryData: mockup.matches[0].results,
       items: [1402, 3100, 3152, 3020, 3165, 0, 3364],
       matchActionData: [...SelectMatchActionData],
       matchFilterData: [...MatchFilterData],
       selectedActions: [],
       selectedFilters: [...MatchFilterData]
+    }
+  },
+  computed: {
+    blueTeam: function () {
+      const blueTeam = this.lastMatchData.teamSummary.filter(champ => champ.teamId === 100)
+      blueTeam.sort((item1, item2) => item1.roleId - item2.roleId)
+      return blueTeam
+    },
+    redTeam: function () {
+      const redTeam = this.lastMatchData.teamSummary.filter(champ => champ.teamId === 200)
+      redTeam.sort((item1, item2) => item1.roleId - item2.roleId)
+      return redTeam
+    },
+    matchupData: function () {
+      let self = this
+      return this.blueTeam.map((champ, index) => {
+        return {
+          roleId: champ.roleId,
+          blueChamp: self.blueTeam[index],
+          redChamp: self.redTeam[index]
+        }
+      })
     }
   },
   methods: {
@@ -212,6 +236,13 @@ export default {
         text-transform: uppercase;
         transform: rotate(180deg);
         margin-right: 25px;
+
+        &.victory {
+          background-color: #57a773;
+        }
+        &.defeat {
+          background-color: #ee6352;
+        }
       }
 
       .match-title {
@@ -243,7 +274,11 @@ export default {
           }
         }
 
-        // .spells-group {}
+        .spells-group {
+          & > div:last-child {
+            margin-bottom: 0;
+          }
+        }
 
         .items-group {
           margin-top: 12px;
@@ -292,6 +327,8 @@ export default {
       }
 
       .champion-matchups {
+        align-content: center;
+        
         & > div:last-child {
           margin-bottom: 0;
         }
@@ -300,12 +337,22 @@ export default {
           margin-bottom: 3px;
 
           .champion-name {
+            min-width: 70px;
             font-size: 10px;
             padding: 0 10px;
+            text-align: right;
+
+            &.red {
+              text-align: left;
+            }
           }
 
           svg {
             margin: 0 7px 0 5px;
+            g {
+              width: 13px;
+              height: 13px;
+            }
           }
         }
       }
@@ -357,6 +404,16 @@ export default {
 
     .matches-list {
       height: 580px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    &__header {
+      .match-analysis-tile {
+        .champion-matchups {
+          display: none;
+        }
+      }
     }
   }
 }

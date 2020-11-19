@@ -11,7 +11,7 @@
 
     <div class="row">
       <div class="row match-tile__avatar">
-        <ProfileAvatarImg :level="14" />
+        <ProfileAvatarImg :level="matchData.champLevel" />
       </div>
 
       <div class="row match-tile__spells">
@@ -22,29 +22,29 @@
     </div>
 
     <div class="col match-tile__kda">
-      <h4>14 / 5 / 7</h4>
+      <h4>{{ matchData.kills }} / {{ matchData.deaths }} / {{ matchData.assists }}</h4>
       <p>4.20:1 KDA</p>
     </div>
 
     <div class="col match-tile__lvling">
-      <h4>160 CS</h4>
+      <h4>{{ matchData.cs }} CS</h4>
       <p>55% KP</p>
     </div>
 
     <div class="row match-tile__items">
-      <div class="match-tile__items-container" v-for="item in items.slice(0, 6)" :key="item">
+      <div class="match-tile__items-container" v-for="item in matchData.build.slice(0, 6)" :key="item">
         <ItemImg :itemId="item" />
       </div>
     </div>
 
     <div class="col match-tile__teams">
       <div class="row">
-        <div class="match-tile__teams-champion" v-for="champ in teamSummary.filter(champ => champ.teamId === 100)" :key="champ.championId">
+        <div class="match-tile__teams-champion" v-for="champ in matchData.teamSummary.filter(champ => champ.teamId === 100)" :key="champ.championId">
           <ChampionImg team="red" />
         </div>
       </div>
       <div class="row">
-        <div class="match-tile__teams-champion team-blue" v-for="(champ, index) in teamSummary.filter(champ => champ.teamId === 200)" :key="index" :style="{ zIndex: 10 - index }">
+        <div class="match-tile__teams-champion team-blue" v-for="(champ, index) in matchData.teamSummary.filter(champ => champ.teamId === 200)" :key="index" :style="{ zIndex: 10 - index }">
           <ChampionImg team="blue" />
         </div>
       </div>
@@ -77,77 +77,12 @@ export default {
     ChampionImg
   },
   props: {
-    status: {
-      default: 'victory',
-      type: String
-    }
+    matchData: Array
   },
   data () {
     return {
+      status: this.matchData.win ? 'victory' : 'defeat',
       spells: [11, 12, 3, 4],
-      items: [1402, 3100, 3152, 3020, 3165, 0, 3364],
-      teamSummary: [
-        {
-          "championId": 518,
-          "roleId": 4,
-          "summonerName": "Yoshiane",
-          "teamId": 100
-        },
-        {
-          "championId": 28,
-          "roleId": 3,
-          "summonerName": "Desolarus",
-          "teamId": 100
-        },
-        {
-          "championId": 10,
-          "roleId": 2,
-          "summonerName": "HF Yuno",
-          "teamId": 100
-        },
-        {
-          "championId": 81,
-          "roleId": 1,
-          "summonerName": "Tarky",
-          "teamId": 100
-        },
-        {
-          "championId": 53,
-          "roleId": 0,
-          "summonerName": "ardakyrozgr",
-          "teamId": 100
-        },
-        {
-          "championId": 246,
-          "roleId": 4,
-          "summonerName": "Fric",
-          "teamId": 200
-        },
-        {
-          "championId": 75,
-          "roleId": 3,
-          "summonerName": "LaRuSs",
-          "teamId": 200
-        },
-        {
-          "championId": 8,
-          "roleId": 2,
-          "summonerName": "ZjeIympth ",
-          "teamId": 200
-        },
-        {
-          "championId": 29,
-          "roleId": 1,
-          "summonerName": "SheHasBF GO NEXT",
-          "teamId": 200
-        },
-        {
-          "championId": 25,
-          "roleId": 0,
-          "summonerName": "ÊnesÂbi",
-          "teamId": 200
-        }
-      ],
       matchActionData: [...SelectMatchActionData],
       selectedActions: []
     }
@@ -219,7 +154,7 @@ export default {
   }
 
   &__info {
-    width: 120px;
+    width: 100px;
     align-items: flex-start;
 
     h4 {
@@ -246,6 +181,7 @@ export default {
 
     h4 {
       color: #eaeaee;
+      margin-bottom: 14px;
     }
   }
 
@@ -274,8 +210,26 @@ export default {
     }
   }
 
-  // .select-action-containr {
-  //   margin-left: au;
-  // }
+  @media (max-width: 992px) {
+    padding-right: 20px;
+
+    &__status {
+      margin-right: 20px;
+    }
+
+    &__spells {
+      display: none;
+    }
+
+    &__items {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    &__teams {
+      display: none;
+    }
+  }
 }
 </style>
