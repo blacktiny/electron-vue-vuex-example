@@ -22,21 +22,17 @@
                   <img src='https://ddragon.leagueoflegends.com/cdn/10.23.1/img/profileicon/4658.png' alt='avatar' />
                 </div>
                 <div class="spells-group">
-                  <div class="spell">
-                    <div class="spell-img"></div>
-                  </div>
-                  <div class="spell">
-                    <div class="spell-img"></div>
-                  </div>
+                  <SpellImg />
+                  <SpellImg />
                 </div>
                 <div class="row items-group">
                   <div class="main-items">
-                    <div class="item" v-for="spell in spells.slice(0, 6)" :key="{spell}">
-                      <div class="item-img"></div>
+                    <div class="item" v-for="item in items.slice(0, 6)" :key="{item}">
+                      <ItemImg />
                     </div>
                   </div>
                   <div class="item last-item">
-                    <div class="item-img"></div>
+                    <ItemImg />
                   </div>
                 </div>
               </div>
@@ -65,15 +61,38 @@
           </div>
         </div>
       </div>
-      <div class="match-history__content">
 
+      <div class="col match-history__content">
+        <div class="row matches-header">
+          <div class="matches-header__filter">
+          </div>
+
+          <div class="row matches-header__navigator">
+            <div class="button-navigator navigator-prev disabled">
+              <IconBase width="8" height="14" icon-name="navigator-prev">
+                <IconArrowLeft />
+              </IconBase>
+            </div>
+            <div class="navigator-label">
+              <p>1 / 10 of 250</p>
+            </div>
+            <div class="button-navigator navigator-right">
+              <IconBase width="8" height="14" icon-name="navigator-next">
+                <IconArrowRight />
+              </IconBase>
+            </div>
+          </div>
+        </div>
+        <MatchTile />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ChampionImg from './ChampionImg'
+import { ChampionImg, ItemImg, SpellImg } from '@/global/components'
+import MatchTile from './MatchTile'
+import { IconBase, IconArrowLeft, IconArrowRight } from '@/global/icons'
 
 export default {
   name: 'MatchHistory',
@@ -81,10 +100,16 @@ export default {
     msg: String
   },
   components: {
-    ChampionImg
+    ChampionImg,
+    SpellImg,
+    ItemImg,
+    MatchTile,
+    IconBase,
+    IconArrowLeft,
+    IconArrowRight
   },
   data: () => ({
-    spells: [1402, 3100, 3152, 3020, 3165, 0, 3364]
+    items: [1402, 3100, 3152, 3020, 3165, 0, 3364]
   })
 }
 </script>
@@ -99,6 +124,7 @@ export default {
 .match-history {
   &__header {
     width: 100%;
+    margin-bottom: 27px;
 
     .title {
       padding-left: 10px;
@@ -142,7 +168,8 @@ export default {
       }
 
       .match-title {
-        margin-bottom: 20px;
+        padding-top: 3px;
+        margin-bottom: 18px;
 
         img {
           width: 15px;
@@ -170,41 +197,7 @@ export default {
           }
         }
 
-        .spells-group .spell,
-        .items-group .item {
-          width: 19.2px;
-          height: 19.2px;
-          margin: 0 3px 3px 0;
-          border-radius: 3px;
-        }
-
-        .spells-group .spell .spell-img,
-        .items-group .item .item-img {
-          position: relative;
-          width: 48px;
-          height: 48px;
-          background-repeat: no-repeat;
-          transform: scale(0.4);
-          transform-origin: left top;
-        }
-
-        .spells-group {
-          div:nth-child(1) {
-            .spell-img {
-              background-position: -192px 0px;
-            }
-          }
-          div:nth-child(2) {
-            .spell-img {
-              background-position: -240px 0px;
-            }
-          }
-
-          .spell-img {
-            background-image: url(https://ddragon.leagueoflegends.com/cdn/10.23.1/img/sprite/spell0.png);
-            border-radius: 0px;
-          }
-        }
+        .spells-group {}
 
         .items-group {
           margin-top: 12px;
@@ -212,25 +205,7 @@ export default {
           .main-items {
             display: flex;
             flex-wrap: wrap;
-            width: 67px;
-
-            div:nth-child(1) {
-              .item-img {
-                background-position: -192px -288px;
-              }
-            }
-            div:nth-child(2) {
-              .item-img {
-                background-position: -240px -288px;
-              }
-            }
-          }
-
-          .item-img {
-            background-color: rgb(28, 31, 51);
-            background-image: url(https://ddragon.leagueoflegends.com/cdn/10.23.1/img/sprite/item0.png);
-            background-position: -192px -288px;
-            border-radius: 8px;
+            width: 70px;
           }
         }
       }
@@ -288,7 +263,39 @@ export default {
   }
 
   &__content {
+    .matches-header {
+      margin-bottom: 10px;
 
+      &__navigator {
+        
+        .button-navigator {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 30px;
+          height: 30px;
+          background-color: #44465d;
+          cursor: pointer;
+          transition: background 0.3s ease-in-out;
+
+          &.disabled {
+            background-color: #1c1f33;
+
+            &:hover {
+              background-color: #1c1f33;
+            }
+          }
+
+          &:hover {
+            background-color: #6e7088;
+          }
+        }
+
+        .navigator-label {
+          padding: 0 15px;
+        }
+      }
+    }
   }
 }
 </style>
